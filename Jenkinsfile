@@ -1,16 +1,22 @@
 pipeline {
     agent any
 
+    environment {
+        BRANCH_NAME = 'main'
+        GIT_URL = 'https://github.com/TheJoker91/shadowprep_aws_cicd'
+    }
+
     stages {
         stage ('git checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/TheJoker91/shadowprep_aws_cicd'
+                git branch: "${BRANCH_NAME}", url: "${GIT_URL}"
             }
         }
 
-        stage ('test') {
+        stage ('docker build') {
             steps {
-                sh 'echo test'
+                sh 'docker build -t awscicd .'
+                sh 'docker images'
             }
         }
 
